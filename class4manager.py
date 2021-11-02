@@ -6,10 +6,6 @@ import csv
 import os
 from random import choices
 
-# refer1 = r'C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\PlayTennis.csv'
-# refer2 = r'C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\test_student_buy.csv'
-# refer3 = r'C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\phishing_final.csv'
-
 
 class UX:
 
@@ -162,10 +158,16 @@ class Manager:
         return self.__file.names
 
 
-# C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\PlayTennis.csv
-mng = Manager()
-print(mng.get_data())
+def test():
+         # refer1 = 'PlayTennis.csv'
+         # refer2 = 'test_student_buy.csv'
+         # refer3 = 'phishing_final.csv'  
+         mng = Manager()
+         print(mng.get_data())
 
+        
+if __name__ == '__main__':
+         test()
 
 
 
