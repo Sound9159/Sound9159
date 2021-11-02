@@ -1,0 +1,15 @@
+com,credit_rating,student,incom,age
+no,fair,no,high,<=30
+no,excellent,no,high,<=30
+yes,fair,no,high,31…40
+yes,fair,no,medium,>40
+yes,fair,yes,low,>40
+no,excellent,yes,low,>40
+yes,excellent,yes,low,31…40
+no,fair,no,medium,<=30
+yes,fair,yes,low,<=30
+yes,fair,yes,medium,>40
+yes,excellent,yes,medium,<=30
+yes,excellent,no,medium,31…40
+yes,fair,yes,high,31…40
+no,excellent,no,medium,>40
