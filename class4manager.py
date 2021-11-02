@@ -1,17 +1,13 @@
 """
-
+Classes for the main in the Naive-Bayes Projects
 """
 
 import csv
 import os
 from random import choices
 
-# refer1 = r'C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\PlayTennis.csv'
-# refer2 = r'C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\test_student_buy.csv'
-# refer3 = r'C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\phishing_final.csv'
 
-
-class UX:
+class UI:
 
     def print_mass(self, mass):
         print(mass)
@@ -27,13 +23,13 @@ class UX:
             if ans:
                 refer = input('Please insert reference:\n>> ')
                 if os.path.exists(refer):
-                    return refer   #??   input: r'c:\fgh'
+                    return refer
                 self.print_mass('** ReferenceError: something is wrong with the file reference **')
             else:
                 self.print_mass('** No reference entered **')
                 return ans
 
-    def int_input(self,mass: str) -> int:
+    def int_input(self, mass: str) -> int:
         """ input + validation for integer input
         Returns an integer if the user's input is valid, otherwise keep looping.
         @:param: mass - a massage you want the user to see
@@ -58,30 +54,30 @@ class UX:
 
 class DataFile:
 
-    def __init__(self, ref, ux):
-        self.ux = ux
+    def __init__(self, ref, ui):
+        self.ui = ui
         self.__DATA_raw = open(ref)
-        self.names = tuple(next(csv.reader(self.__DATA_raw)))
-        self.DATA = list(csv.reader(self.__DATA_raw)).copy()
+        self.names = tuple(next(csv.reader(self.__DATA_raw)))  # tuple of str
+        self.DATA = list(csv.reader(self.__DATA_raw)).copy()  # list of lists
         self.__DATA_raw.close()
-        self.__select_column()
+        self.__select_column()  # initiates by default column selection
 
     def __select_column(self):
-        self.ux.print_mass('Here are all the attributes in your data:')
+        self.ui.print_mass('Here are all the attributes in your data:')
         for i in range(len(self.names)):
-            print(i+1,"-",self.names[i])
+            print(i+1, "-", self.names[i])
         stop = False
         while not stop:
-            ans = self.ux.int_input('How many attributes would you like to omit?')
+            ans = self.ui.int_input('How many attributes would you like to omit?')
             if ans:
                 to_omit = []   # list of column number to omit
-                self.ux.print_mass('Please select the columns you would like to omit')
+                self.ui.print_mass('Please select the columns you would like to omit')
                 for i in range(ans):
-                    to_omit.append(self.ux.int_input(f'Selection Number {i+1}:'))  # numbers from 1
-                self.ux.print_mass('You chose to omit the following attributes:')
+                    to_omit.append(self.ui.int_input(f'Selection Number {i+1}:'))  # numbers from 1
+                self.ui.print_mass('You chose to omit the following attributes:')
                 for i in sorted(to_omit):
                     print(i, "-", self.names[i-1])
-                stop = self.ux.bool_input('Do you confirm your choice?')
+                stop = self.ui.bool_input('Do you confirm your choice?')
                 if stop:
                     # columns deleting
                     subDATA = []  # list of rows as tuples
@@ -101,25 +97,31 @@ class DataFile:
 
 class Classifier:
 
-    def __init__(self, file, ux):
-        self.ux = ux
-        self.__data = file.DATA
-        self.N = len(self.__data.DATA)
+    def __init__(self, file, ui):
+        self.ui = ui
+        self.__data = file.DATA.copy()  # list of tuples
+        self.N = len(self.__data)
 
     def set_classifier(self):
-        self.ux.print_mass('Please choose the classifier from the attributes list below:')
+        """ sets all the information about the selected classifier in the data
+        (1) self.class_ind - the classifier column number
+        (2) self.class_vec - the column of the classifier
+        (3) self.class_val - the unique values of the classifier
+        :return: None
+        """
+        self.ui.print_mass('Please choose the classifier from the attributes list below:')
         for i in range(len(self.__data.names)):
             print(i + 1, "-", self.__data.names[i])
-        self.class_ind = self.ux.int_input('') - 1  # the classifier index
-        self.class_vec = [row[self.class_ind] for row in self.__data.DATA]  # the outcome column
-        self.class_val = set(self.class_vec)
+        self.class_ind = self.ui.int_input('') - 1  # the classifier index
+        self.class_vec = [row[self.class_ind] for row in self.__data]  # the classifier column
+        self.class_val = set(self.class_vec)  # the classifier unique values
 
     def set_train_test(self, p: float = 0.7):
         """
         Split the data to training-set and test-set as instance variables.
         (p*100)% of the data is assigned to the training-set.
         (1-p)*100% of the data is assigned to the test-set.
-        :param p: a float, indicate the sixe of the training-set out of the data
+        :param p: a float, indicate the size of the training-set out of the data
         :return:
         """
         ind_dict = dict.fromkeys(self.class_val, [])
@@ -132,13 +134,11 @@ class Classifier:
         self.test_set = [self.__data.DATA[ind] for ind in range(self.N) if ind not in train_ind]
 
 
-
-    def set_probs(self):
+    def probs(self):
         """ calculates all the conditional probabilities of the data
         :return dictionary of the unique rows as keys,
          and the value is a list of the probabilities."""
-        # self.prob_class = dict.fromkeys(self.class_val, )
-
+        pass
 
 
 class NewRecord:
@@ -148,12 +148,12 @@ class NewRecord:
 class Manager:
 
     def __init__(self):
-        self.UX = UX()
-        self.__ref = self.UX.refer_input()
+        self.UI = UI()
+        self.__ref = self.UI.refer_input()
         if self.__ref:
-            self.__file = DataFile(self.__ref, self.UX)  # (.names , .DATA)
+            self.__file = DataFile(self.__ref, self.UI)  # (.names , .DATA)
         else:
-            self.UX.print_mass('Goodbye!')
+            self.UI.print_mass('Goodbye!')
 
     def get_data(self):
         return self.__file.DATA
@@ -162,10 +162,16 @@ class Manager:
         return self.__file.names
 
 
-# C:\Users\Tzlil\Desktop\Tech-Career\Projects\OOP_Bayes_Classification\PlayTennis.csv
-mng = Manager()
-print(mng.get_data())
+def test():
+         # refer1 = 'PlayTennis.csv'
+         # refer2 = 'test_student_buy.csv'
+         # refer3 = 'phishing_final.csv'  
+         mng = Manager()
+         print(mng.get_data()[0])
 
+        
+if __name__ == '__main__':
+         test()
 
 
 
