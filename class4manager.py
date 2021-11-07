@@ -242,22 +242,22 @@ class Manager:
         return self.__file.names
 
     def accuracy(self, data: list):
-        n = len(data)
-        preds = []
+        ls1 = []
         correct = 0
         for row in data:
-            pred = NewRecord(row, self.classifier).pred
-            if not pred:
+            foo = NewRecord(row, self.classifier).pred
+            if foo:
+                ls1.append(foo)
+                correct += foo == row[self.classifier.class_ind]
+            else:
                 return
-            preds.append(pred)
-            correct += pred == row[self.classifier.class_ind]
-        acc = correct/n
-        return acc, preds
+        ACR = correct/len(data)
+        return ACR, ls1
 
 
 def test():
-
-    print('############ Basic Example ############')
+    """
+    print('\n############ Basic Example ############')
     cl1 = Classifier(DataFile('PlayTennis.csv'))
     print('\n#### Training-Set ####')
     for row in cl1.train_data:
@@ -277,9 +277,9 @@ def test():
     print('Prediction :', new_rec.pred, '=?=', new_rec.pred, ':', 'Outcome')
     # ('No', 'FALSE', 'High', 'Hot')
     print('\n\n')
-
-    """
-    print('############ Without "Outlook" ############')
+    # """
+    # """
+    print('\n############ Without "Outlook" ############')
     print('###### "Temperature" as the Outcome ######')
     print('############ SAY WHAAAAAT ??? ############')
     cl2 = Classifier(DataFile('PlayTennis.csv'))

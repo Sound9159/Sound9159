@@ -7,7 +7,7 @@ from class4manager import *
 
 
 def main():
-    # """
+    """
     print('########### Are You Excited as We Are ?? ###########')
     print('\n#################### Small Data ####################')
     manager1 = Manager()  # test_student_buy.csv
@@ -32,8 +32,7 @@ def main():
     for row in manager1.classifier.test_data:
         print(row)
     # """
-    """
-    print('\n\n')
+    # """
     print('\n#################### Large Data ####################')
     manager2 = Manager()  # phishing_final.csv
     ac_train2 = manager2.accuracy(manager2.classifier.train_data)
